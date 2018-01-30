@@ -73,7 +73,7 @@ export class HomePage {
     }
   ];
 
-  private currentPosition: number;
+  private currentAnimal;
   public result: string;
   public showReorder = false;
 
@@ -83,15 +83,17 @@ export class HomePage {
    * Choix aléatoire d'un animal
    * si aucun choix préalable
    */
-  pickAnimalPosition() {
+  pickAnimal() {
     let pos;
-    if (!this.currentPosition) {
+    let animal;
+    if (!this.currentAnimal) {
       pos = Math.floor(Math.random() * this.animals.length);
+      animal = this.animals[pos];
     } else {
-      pos = this.currentPosition;
+      animal = this.currentAnimal;
     }
 
-    return pos;
+    return animal;
   }
 
   /**
@@ -102,12 +104,12 @@ export class HomePage {
     this.result = "";
 
     //choix d'un animal
-    this.currentPosition = this.pickAnimalPosition();
-    let choosenAnimal = this.animals[this.currentPosition];
+    this.currentAnimal = this.pickAnimal();
+    
 
     //Chargement du son
     let audio = new Audio();
-    audio.src = 'assets' + choosenAnimal.file;
+    audio.src = 'assets' + this.currentAnimal.file;
     audio.load();
 
     //lecture du son
@@ -118,14 +120,19 @@ export class HomePage {
    * Deviner l'animal en fonction de son cri
    * @param pos 
    */
-  guess(pos) {
+  guess(animalName) {
+
+    console.log(this.currentAnimal);
+    console.log(animalName);
+    
+
     //est ce que l'on a joué un son
-    if (this.currentPosition) {
+    if (this.currentAnimal) {
       //est ce que l'on a choisi le bon animal
-      if (pos == this.currentPosition) {
+      if (animalName == this.currentAnimal.title) {
         this.result = "Gagné";
         //Réinitialisation du choix pour faire un nouveau jeu
-        this.currentPosition = null;
+        this.currentAnimal = null;
       } else {
         this.result = "Essaie encore";
       }
