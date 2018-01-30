@@ -73,16 +73,39 @@ export class HomePage {
     }
   ];
 
-  constructor(public navCtrl: NavController) {
+  private currentPosition:number;
 
-  }
+  constructor(public navCtrl: NavController) {}
 
   /**
    * Choix aléatoire d'un animal
    */
   pickAnimalPosition(){
-    let pos = Math.floor(Math.random() * this.animals.length);
+    let pos;
+    if(! this.currentPosition){
+      pos = Math.floor(Math.random() * this.animals.length);
+    } else {
+      pos = this.currentPosition;
+    }
+    
     return pos;
+  }
+
+  /**
+   * Lecture d'un son
+   */
+  playSound(){
+    //choix d'un animal
+    this.currentPosition = this.pickAnimalPosition();
+    let choosenAnimal = this.animals[this.currentPosition];
+
+    //Chargement du son
+    let audio = new Audio();
+    audio.src = 'assets' + choosenAnimal.file;
+    audio.load();
+
+    //lecture du son
+    audio.play();
   }
 
 }
